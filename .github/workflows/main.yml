@@ -19,19 +19,25 @@ jobs:
     
     - name: Download pf2_cn.zip
       run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
+
     - name: Unzip module.json from pf2_cn.zip
-      run: unzip -p ./.github/pf2_cn.zip 'module.json' > module.json
+      run: unzip -p ./.github/pf2_cn.zip 'module.json' > ./.github/module.json
+
     - name: Read version from module.json
       id: read_version
-      run: echo "{version}={$(cat module.json | jq -r 'version')}" >> $GITHUB_OUTPUT
+      run: echo "version=$(cat ./.github/module.json | jq -r 'version')" >> $GITHUB_OUTPUT
+
     - name: Convert cn.json to zh-tw.json
       run: |
         mkdir -p .github/${{ steps.read_version.outputs.version }}
         opencc -i cn.json -o .github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
+
     - name: Convert re-cn.json to re-zh-tw.json
       run: opencc -i re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
+
     - name: Update version in module.json
       run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > .github/${{ steps.read_version.outputs.version }}/module.json
+
     - name: Upload files to release
       uses: actions/upload-release-asset@v1
       with:

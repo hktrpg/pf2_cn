@@ -50,5 +50,5 @@ jobs:
         with:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.zip"
+          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.zip, ./.github/${{ steps.read_version.outputs.version }}/module.json"
           tag: ${{ steps.read_version.outputs.version }}

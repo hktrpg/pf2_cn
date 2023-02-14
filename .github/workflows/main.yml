@@ -40,11 +40,15 @@ jobs:
       - name: Update version in module.json
         run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json
 
+      - name: Create Artifact
+        id: build-zip
+        run: zip -r ./.github/${{ steps.read_version.outputs.version }}/module.zip "./.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json"
+
       - name: Update Release with Files
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json"
+          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.zip"
           tag: ${{ steps.read_version.outputs.version }}

@@ -3,7 +3,7 @@
 ![downloads](https://img.shields.io/github/downloads/hktrpg/pf2_cn_to_zh-tw/total)
 
 本模組為 FVTT 的 [PF2e 系統](https://gitlab.com/hooking/foundry-vtt---pathfinder-2e)提供了正體中文翻譯。
-**建議配合 [Foundry VTT PF2e 合集包正體中文](https://github.com/hktrpg/pf2e_compendium_chn)一同使用**。
+**建議配合 [Foundry VTT PF2e 合集包正體中文](https://github.com/hktrpg/pf2e_compendium_zh-tw)一同使用**。
 
 ## 安裝
 

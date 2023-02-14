@@ -1,60 +1,86 @@
-name: Create Release
+name: Update Chinese localization for pf2_cn module
 
-on: 
-  release:
-    types: [ published ]
-
-env:
-  ZIP_FILENAME: "pf2_cn"
-  PACKAGE_CONTENT: "module.json cn.json re-cn.json"
-  PACKAGE_ID: 827
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  update_cn_localization:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        id: checkout
         uses: actions/checkout@v2
-
-      # Substitute the Manifest and Download URLs in the module.json
-      - name: Substitute Manifest and Download Links For Versioned Ones
-        id: sub_manifest_link_version
-        uses: microsoft/variable-substitution@v1
+      
+      - name: Download latest pf2_cn release
+        id: download_release
+        uses: curl-actions/download@v2
         with:
-          files: 'module.json'
+          url: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
+          output: pf2_cn.zip
+      
+      - name: Extract module.json and version from pf2_cn.zip
+        id: extract_module_info
+        run: |
+          unzip pf2_cn.zip module.json
+          echo "::set-output name=version::$(jq -r '.version' module.json)"
+      
+      - name: Translate cn.json to zh-tw.json and re-cn.json to re-zh-tw.json
+        uses: cnjackchen/opencc-python-reimplemented@v1
+        with:
+          source-text: |
+            ${{ readFile('cn.json') }}
+          config: t2s.json
+        id: translate_cn_to_tw
+        run: |
+          echo "${{ steps.translate_cn_to_tw.outputs.text }}" > zh-tw.json
+          opencc -c t2s.json -i re-cn.json -o re-zh-tw.json
+      
+      - name: Create new version folder
+        id: create_version_folder
+        run: |
+          mkdir .github/${{ steps.extract_module_info.outputs.version }}
+          mv zh-tw.json .github/${{ steps.extract_module_info.outputs.version }}/zh-tw.json
+          mv re-zh-tw.json .github/${{ steps.extract_module_info.outputs.version }}/re-zh-tw.json
+      
+      - name: Update module.json version
+        id: update_module_json_version
+        run: |
+          jq '.version = $version' module.json > tmp_module.json
+          mv tmp_module.json module.json
+      
+      - name: Commit changes and push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update Chinese localization for pf2_cn module to version ${{ steps.extract_module_info.outputs.version }}"
+          commit_options: '--no-verify'
+          branch: main
         env:
-          version: ${{github.event.release.tag_name}}
-          url: https://github.com/${{github.repository}}
-          manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/${{env.ZIP_FILENAME}}.zip
-          changelog: https://github.com/${{github.repository}}/releases/tag/${{github.event.release.tag_name}}
-          
-      # Create a zip file with all files required by the module to add to the release
-      - name: Create Artifact
-        id: build-zip
-        run: zip -r $ZIP_FILENAME.zip $PACKAGE_CONTENT
-
-      # Create a release for this specific version
-      - name: Update Release with Files
-        id: create_version_release
-        uses: ncipollo/release-action@v1
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create new release
+        uses: actions/create-release@v1
         with:
-          allowUpdates: true
-          name: ${{ github.event.release.name }}
+          tag_name: ${{ steps.extract_module_info.outputs.version }}
+          release_name: ${{ steps.extract_module_info.outputs.version }}
+          body: |
+            Update Chinese localization for pf2_cn module to version ${{ steps.extract_module_info.outputs.version }}
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './module.json, ./${{env.ZIP_FILENAME}}.zip'
-          tag: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
-
-      - name: Publish to Foundry VTT Repo
-        id: publish_foundry_repo
-        if: ${{ env.PACKAGE_ID }}
-        run: npx @ghost-fvtt/foundry-publish
         env:
-          FVTT_MANIFEST_PATH: 'module.json'
-          FVTT_PACKAGE_ID: ${{ env.PACKAGE_ID }}
-          FVTT_USERNAME: ${{ secrets.FVTT_USERNAME }}
-          FVTT_PASSWORD: ${{ secrets.FVTT_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload zh-tw.json and re-zh-tw.json to release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .github/${{ steps.extract_module_info.outputs.version }}/zh-tw.json
+          asset_name: zh-tw.json
+          asset_content_type: application/json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload re-zh-tw.json to release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .github/${{ steps.extract_module_info.outputs.version }}/re-zh

@@ -28,11 +28,10 @@
   "dependencies": [{
     "name": "pf2e",
     "type": "system",
-    "manifest": "https://github.com/hktrpg/pf2e/releases/latest/download/module.json"
+    "manifest": "https://github.com/foundryvtt/pf2e/releases/latest/download/system.json"
   }],
-  "changelog": "Auto replaced",
   "version": "Auto replaced",
-  "url": "Auto replaced",
-  "manifest": "Auto replaced",
-  "download": "Auto replaced"
+  "url": "https://github.com/hktrpg/pf2_cn_to_zh-tw",
+  "manifest": "https://raw.githubusercontent.com/hktrpg/pf2_cn_to_zh-tw/main/module.json",
+  "download": "https://github.com/hktrpg/pf2_cn_to_zh-tw/releases/latest/download/pf2_cn_to_zh-tw.zip"
 }

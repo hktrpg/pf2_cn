@@ -1,11 +1,11 @@
 {
-  "name": "pf2_cn",
-  "title": "Translation: 中文 [PF2e]",
-  "description": "本模组为 FVTT 的 PF2e 系统提供了中文翻译。",
+  "name": "pf2_cn_to_zh-tw",
+  "title": "Translation: 正體中文 [PF2e]",
+  "description": "本模組為 FVTT 的 PF2e 系统提供正體中文翻譯。",
   "authors": [
     {
-      "name": "FVTT-CN",
-      "email": "fvtt-cn@dickytwister.org"
+      "name": "HKTRPG",
+      "email": "admin@hktrpg.com"
     }
   ],
   "compatibility": {
@@ -15,20 +15,20 @@
   "systems": [ "pf2e" ],
   "languages": [
     {
-      "lang": "cn",
-      "name": "系统主体（中文）",
-      "path": "cn.json"
+      "lang": "zh-tw",
+      "name": "正體中文",
+      "path": "zh-tw.json"
     },
     {
-      "lang": "cn",
-      "name": "规则元素（中文）",
-      "path": "re-cn.json"
+      "lang": "zh-tw",
+      "name": "規則元素（正體中文）",
+      "path": "re-zh-tw.json"
     }
   ],
   "dependencies": [{
     "name": "pf2e",
     "type": "system",
-    "manifest": "https://github.com/foundryvtt/pf2e/releases/latest/download/system.json"
+    "manifest": "https://github.com/hktrpg/pf2e/releases/latest/download/system.json"
   }],
   "changelog": "Auto replaced",
   "version": "Auto replaced",

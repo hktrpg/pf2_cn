@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download pf2_cn.zip
-      uses: curl-actions/download@v2
+      uses: actions/download-artifact@v2
       with:
         url: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
         output: pf2_cn.zip

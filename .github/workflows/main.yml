@@ -9,45 +9,42 @@ jobs:
   update-translation:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      id: checkout
-      uses: actions/checkout@v2
-    
-    - name: Install jq and unzip
-      run: |
+      - name: Checkout code
+        id: checkout
+        uses: actions/checkout@v2
+
+      - name: Install jq and unzip
+        run: |
           sudo apt-get install -y jq unzip opencc
-    
-    - name: Download pf2_cn.zip
-      run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
 
-    - name: Unzip module.json from pf2_cn.zip
-      run: unzip -p ./.github/pf2_cn.zip 'module.json' >./.github/module.json
+      - name: Download pf2_cn.zip
+        run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
 
-    - name: Read version from module.json
-      id: read_version
-      run: |
-        echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
-        rm ./.github/module.json
-    - name: Convert cn.json to zh-tw.json
-      run: |
-        mkdir -p ./.github/${{ steps.read_version.outputs.version }}
-        unzip ./.github/pf2_cn.zip -d ./.github/${{ steps.read_version.outputs.version }}
-        opencc -i ./.github/${{ steps.read_version.outputs.version }}/cn.json -o ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
+      - name: Unzip module.json from pf2_cn.zip
+        run: unzip -p ./.github/pf2_cn.zip 'module.json' >./.github/module.json
 
-    - name: Convert re-cn.json to re-zh-tw.json
-      run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
+      - name: Read version from module.json
+        id: read_version
+        run: |
+          echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
+          rm ./.github/module.json
+      - name: Convert cn.json to zh-tw.json
+        run: |
+          mkdir -p ./.github/${{ steps.read_version.outputs.version }}
+          unzip ./.github/pf2_cn.zip -d ./.github/${{ steps.read_version.outputs.version }}
+          opencc -i ./.github/${{ steps.read_version.outputs.version }}/cn.json -o ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
 
-    - name: Update version in module.json
-      run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json
+      - name: Convert re-cn.json to re-zh-tw.json
+        run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
 
-    - name: Update Release with Files
-      id: create_version_release
-      uses: ncipollo/release-action@v1
-      with:
+      - name: Update version in module.json
+        run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json
+
+      - name: Update Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
           allowUpdates: true
-          name: ${{ github.event.release.name }}
-          draft: false
-          prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json,'
+          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json,"
           tag: ${{ steps.read_version.outputs.version }}

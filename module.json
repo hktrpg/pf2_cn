@@ -28,7 +28,7 @@
   "dependencies": [{
     "name": "pf2e",
     "type": "system",
-    "manifest": "https://github.com/hktrpg/pf2e/releases/latest/download/system.json"
+    "manifest": "https://github.com/hktrpg/pf2e/releases/latest/download/module.json"
   }],
   "changelog": "Auto replaced",
   "version": "Auto replaced",

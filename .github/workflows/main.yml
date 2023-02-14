@@ -14,8 +14,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq unzip  
     - name: Download pf2_cn.zip
-      run: |
-          wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
+      run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
     - name: Unzip module.json from pf2_cn.zip
       run: unzip -p pf2_cn.zip 'module.json' > module.json
     - name: Read version from module.json

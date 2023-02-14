@@ -46,5 +46,5 @@ jobs:
         with:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json,"
+          artifacts: "./.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json"
           tag: ${{ steps.read_version.outputs.version }}

@@ -50,5 +50,5 @@ jobs:
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: '.github/${{ steps.read_version.outputs.version }}/module.json, .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, .github/${{ steps.read_version.outputs.version }}/zh-tw.json,'
-          tag: ${{ github.event.release.tag_name }}
+          tag: ${{ steps.read_version.outputs.version }}
           body: ${{ github.event.release.body }}

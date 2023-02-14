@@ -23,7 +23,7 @@ jobs:
       run: unzip -p ./.github/pf2_cn.zip 'module.json' > module.json
     - name: Read version from module.json
       id: read_version
-      run: echo ::set-output name=version::$(cat module.json | jq -r '.version')
+      run: echo "{version}={$(cat module.json | jq -r 'version')}" >> $GITHUB_OUTPUT
     - name: Convert cn.json to zh-tw.json
       run: |
         mkdir -p .github/${{ steps.read_version.outputs.version }}

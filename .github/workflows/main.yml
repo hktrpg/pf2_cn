@@ -15,7 +15,7 @@ jobs:
     
     - name: Install jq and unzip
       run: |
-          sudo apt-get install -y jq unzip  
+          sudo apt-get install -y jq unzip opencc
     
     - name: Download pf2_cn.zip
       run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip

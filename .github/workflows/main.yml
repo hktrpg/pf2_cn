@@ -42,7 +42,7 @@ jobs:
 
       - name: Create Artifact
         id: build-zip
-        run: zip -Dj -r ./.github/1.5.1/module.zip . -i ./.github/1.5.1/module.json  ./.github/1.5.1/re-zh-tw.json  ./.github/1.5.1/zh-tw.json
+        run: zip -j -r ./.github/1.5.1/module.zip . -i ./.github/1.5.1/module.json  ./.github/1.5.1/re-zh-tw.json  ./.github/1.5.1/zh-tw.json
 
       - name: Update Release with Files
         id: create_version_release

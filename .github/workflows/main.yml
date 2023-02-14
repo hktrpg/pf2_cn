@@ -16,7 +16,7 @@ jobs:
     - name: Download pf2_cn.zip
       uses: actions/download-artifact@v3
       with:
-        path: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
+        outputs: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
         name: pf2_cn.zip
     - name: Unzip module.json from pf2_cn.zip
       run: unzip -p pf2_cn.zip 'module.json' > module.json

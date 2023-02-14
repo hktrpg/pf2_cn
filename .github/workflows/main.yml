@@ -1,4 +1,4 @@
-name: Update Chinese localization for pf2_cn module
+name: Update Chinese (Traditional) Translation
 
 on:
   push:
@@ -6,81 +6,32 @@ on:
       - main
 
 jobs:
-  update_cn_localization:
+  update-translation:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Download latest pf2_cn release
-        id: download_release
-        uses: curl-actions/download@v2
-        with:
-          url: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
-          output: pf2_cn.zip
-      
-      - name: Extract module.json and version from pf2_cn.zip
-        id: extract_module_info
-        run: |
-          unzip pf2_cn.zip module.json
-          echo "::set-output name=version::$(jq -r '.version' module.json)"
-      
-      - name: Translate cn.json to zh-tw.json and re-cn.json to re-zh-tw.json
-        uses: cnjackchen/opencc-python-reimplemented@v1
-        with:
-          source-text: |
-            ${{ readFile('cn.json') }}
-          config: t2s.json
-        id: translate_cn_to_tw
-        run: |
-          echo "${{ steps.translate_cn_to_tw.outputs.text }}" > zh-tw.json
-          opencc -c t2s.json -i re-cn.json -o re-zh-tw.json
-      
-      - name: Create new version folder
-        id: create_version_folder
-        run: |
-          mkdir .github/${{ steps.extract_module_info.outputs.version }}
-          mv zh-tw.json .github/${{ steps.extract_module_info.outputs.version }}/zh-tw.json
-          mv re-zh-tw.json .github/${{ steps.extract_module_info.outputs.version }}/re-zh-tw.json
-      
-      - name: Update module.json version
-        id: update_module_json_version
-        run: |
-          jq '.version = $version' module.json > tmp_module.json
-          mv tmp_module.json module.json
-      
-      - name: Commit changes and push
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update Chinese localization for pf2_cn module to version ${{ steps.extract_module_info.outputs.version }}"
-          commit_options: '--no-verify'
-          branch: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Create new release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ steps.extract_module_info.outputs.version }}
-          release_name: ${{ steps.extract_module_info.outputs.version }}
-          body: |
-            Update Chinese localization for pf2_cn module to version ${{ steps.extract_module_info.outputs.version }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Upload zh-tw.json and re-zh-tw.json to release assets
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: .github/${{ steps.extract_module_info.outputs.version }}/zh-tw.json
-          asset_name: zh-tw.json
-          asset_content_type: application/json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload re-zh-tw.json to release assets
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: .github/${{ steps.extract_module_info.outputs.version }}/re-zh
+    - name: Download pf2_cn.zip
+      uses: curl-actions/download@v5
+      with:
+        url: https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip
+        output: pf2_cn.zip
+    - name: Unzip module.json from pf2_cn.zip
+      run: unzip -p pf2_cn.zip 'module.json' > module.json
+    - name: Read version from module.json
+      id: read_version
+      run: echo ::set-output name=version::$(cat module.json | jq -r '.version')
+    - name: Convert cn.json to zh-tw.json
+      run: |
+        mkdir -p .github/${{ steps.read_version.outputs.version }}
+        opencc -i cn.json -o .github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
+    - name: Convert re-cn.json to re-zh-tw.json
+      run: opencc -i re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
+    - name: Update version in module.json
+      run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > .github/${{ steps.read_version.outputs.version }}/module.json
+    - name: Upload files to release
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: https://uploads.github.com/repos/{owner}/{repo}/releases/{id}/assets{?name,label}
+        name: pf2_cn_to_zh-tw-${{ steps.read_version.outputs.version }}.zip
+        path: .github/${{ steps.read_version.outputs.version }}/pf2_cn_to_zh-tw.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

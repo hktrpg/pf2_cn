@@ -35,7 +35,7 @@ jobs:
         opencc -i ./.github/${{ steps.read_version.outputs.version }}/cn.json -o ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
 
     - name: Convert re-cn.json to re-zh-tw.json
-      run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
+      run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
 
     - name: Update version in module.json
       run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json
@@ -49,6 +49,5 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: '.github/${{ steps.read_version.outputs.version }}/module.json, .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, .github/${{ steps.read_version.outputs.version }}/zh-tw.json,'
+          artifacts: './.github/${{ steps.read_version.outputs.version }}/module.json, ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json,'
           tag: ${{ steps.read_version.outputs.version }}
-          body: ${{ github.event.release.body }}

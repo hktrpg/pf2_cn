@@ -38,13 +38,17 @@ jobs:
       run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
 
     - name: Update version in module.json
-      run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > .github/${{ steps.read_version.outputs.version }}/module.json
+      run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json
 
-    - name: Upload files to release
-      uses: actions/upload-release-asset@v1
+    - name: Update Release with Files
+      id: create_version_release
+      uses: ncipollo/release-action@v1
       with:
-        upload_url: https://uploads.github.com/repos/{owner}/{repo}/releases/{id}/assets{?name,label}
-        name: pf2_cn_to_zh-tw-${{ steps.read_version.outputs.version }}.zip
-        path: .github/${{ steps.read_version.outputs.version }}/pf2_cn_to_zh-tw.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: '.github/${{ steps.read_version.outputs.version }}/module.json, .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json, .github/${{ steps.read_version.outputs.version }}/zh-tw.json,'
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}

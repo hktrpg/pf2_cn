@@ -32,10 +32,10 @@ jobs:
       run: |
         mkdir -p ./.github/${{ steps.read_version.outputs.version }}
         unzip ./.github/pf2_cn.zip -d ./.github/${{ steps.read_version.outputs.version }}
-        opencc -i cn.json -o ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
+        opencc -i ./.github/${{ steps.read_version.outputs.version }}/cn.json -o ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json -c s2tw.json
 
     - name: Convert re-cn.json to re-zh-tw.json
-      run: opencc -i re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
+      run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o .github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
 
     - name: Update version in module.json
       run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > .github/${{ steps.read_version.outputs.version }}/module.json

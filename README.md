@@ -8,6 +8,7 @@
 ## 安裝
 
 - [x] 模組管理器中，搜索 `Translation: 正體中文 [PF2e]`
+- [x] 模組管理器中，直接下載 `https://github.com/hktrpg/pf2_cn_to_zh-tw/releases/latest/download/module.json`
 
 ## 感謝
 

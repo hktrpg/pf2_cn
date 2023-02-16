@@ -36,6 +36,12 @@ jobs:
           echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ./.github/module.json)"
           rm ./.github/module.json
+      
+      - name: Print version
+        run: |
+          echo "tag_name: ${{ steps.last_release.outputs.tag_name }}"
+          echo ${{ steps.last_release.outputs.tag_name }}
+          ${{ steps.last_release.outputs.tag_name }} !== ${{ steps.read_version.outputs.version }}
 
       - name: Convert cn.json to zh-tw.json
         if: ${{ steps.last_release.outputs.tag_name }} !== ${{ steps.read_version.outputs.version }}

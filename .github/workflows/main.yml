@@ -28,6 +28,14 @@ jobs:
         run: |
           echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
           rm ./.github/module.json
+
+      - name: If version name equal latest Releases, exit
+        id: check version
+        if: ${{ steps.read_version.outputs.version == steps.latest_release.outputs.tag}}
+        run: |
+          echo "${{ steps.read_version.outputs.version }} Same Version"
+          exit 1
+
       - name: Convert cn.json to zh-tw.json
         run: |
           mkdir -p ./.github/${{ steps.read_version.outputs.version }}

@@ -19,7 +19,7 @@ jobs:
 
       - name: Get latest release tag
         id: latest_release
-        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${GITHUB_REF#refs/tags/*}" >> $GITHUB_OUTPUT
 
       - name: Version
         run: |
@@ -37,11 +37,6 @@ jobs:
           echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ./.github/module.json)"
           rm ./.github/module.json
-
-      - name: If version name equal latest Releases, exit
-        run: |
-          echo "${{ steps.read_version.outputs.version }} Same Version"
-          exit 1
 
       - name: Convert cn.json to zh-tw.json
         run: |

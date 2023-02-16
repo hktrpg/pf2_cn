@@ -26,6 +26,7 @@ jobs:
           echo "${{ steps.latest_release.outputs.tag}}"
           echo "${{ github.ref }}"
           echo " ${{  'refs/tags/' }}"
+          echo " ${{  'refs/tags/v' }}"
           echo "${GITHUB_REF#refs/tags/}"
           echo "${GITHUB_REF#refs/*/}"
           echo "${{github.ref_name}}"

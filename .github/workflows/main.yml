@@ -18,6 +18,10 @@ jobs:
           sudo apt-get install -y jq unzip opencc
           echo "${{ steps.latest_release.outputs.tag}}"
 
+      - name: Get latest release tag
+        id: latest_release
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+
       - name: Version
         run: |
           echo "${{ steps.latest_release.outputs.tag}}"

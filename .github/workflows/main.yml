@@ -29,10 +29,12 @@ jobs:
           echo " ${{  'refs/tags/v' }}"
           echo "${GITHUB_REF#refs/tags/}"
           echo "${GITHUB_REF#refs/*/}"
+          echo "${GITHUB_REF#refs/tags/v}"
           echo "${{github.ref_name}}"
           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
           echo "Tag name from github.ref_name: ${{  github.ref_name }}"
           echo $(git describe --tags --abbrev=0)
+          echo    "$(git describe --tags `git rev-list --tags --max-count=1`)"
 
       - name: Download pf2_cn.zip
         run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip

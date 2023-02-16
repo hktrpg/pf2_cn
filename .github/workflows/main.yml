@@ -16,7 +16,6 @@ jobs:
       - name: Install jq and unzip
         run: |
           sudo apt-get install -y jq unzip opencc
-          echo "${{ steps.latest_release.outputs.tag}}"
 
       - name: Get latest release tag
         id: latest_release
@@ -40,7 +39,6 @@ jobs:
           rm ./.github/module.json
 
       - name: If version name equal latest Releases, exit
-        if: ${{ steps.read_version.outputs.version == steps.latest_release.outputs.tag}}
         run: |
           echo "${{ steps.read_version.outputs.version }} Same Version"
           exit 1

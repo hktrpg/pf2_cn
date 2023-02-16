@@ -19,11 +19,13 @@ jobs:
 
       - name: Get latest release tag
         id: latest_release
-        run: echo "tag=${GITHUB_REF#refs/tags/*}" >> $GITHUB_OUTPUT
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Version
         run: |
           echo "${{ steps.latest_release.outputs.tag}}"
+          echo "${{ github.ref }}"
+          echo " ${{  'refs/tags/' }}"
 
       - name: Download pf2_cn.zip
         run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip

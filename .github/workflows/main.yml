@@ -18,6 +18,10 @@ jobs:
           sudo apt-get install -y jq unzip opencc
           echo "${{ steps.latest_release.outputs.tag}}"
 
+      - name: Version
+        run: |
+          echo "${{ steps.latest_release.outputs.tag}}"
+
       - name: Download pf2_cn.zip
         run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
 
@@ -28,6 +32,7 @@ jobs:
         id: read_version
         run: |
           echo "version=$(jq -r '.version' ./.github/module.json)" >> $GITHUB_OUTPUT
+          echo "version=$(jq -r '.version' ./.github/module.json)"
           rm ./.github/module.json
 
       - name: If version name equal latest Releases, exit

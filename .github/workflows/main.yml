@@ -68,7 +68,7 @@ jobs:
       - name: Create Artifact
         id: build-zip
         if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}
-        run: zip -j -r ./.github/${{ steps.read_version.outputs.version }}/module.zip   ./.github/${{ steps.read_version.outputs.version }}/module.json  ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json  ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json
+        run: zip -j -r ./.github/${{ steps.read_version.outputs.version }}/module.zip   ./.github/${{ steps.read_version.outputs.version }}/module.json  ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json  ./.github/${{ steps.read_version.outputs.version }}/zh-tw.json ./.github/${{ steps.read_version.outputs.version }}/kingmaker-zh-tw.json ./.github/${{ steps.read_version.outputs.version }}/action-zh-tw.json
 
       - name: Update Release with Files
         if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}

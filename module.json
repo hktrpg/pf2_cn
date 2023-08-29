@@ -1,7 +1,7 @@
 {
   "name": "pf2_cn_to_zh-tw",
   "title": "Translation: 正體中文 [PF2e]",
-  "description": "本模組為 FVTT 的 PF2e 系统提供正體中文翻譯。",
+  "description": "本模組為 FVTT 的 PF2e 系统提供正體中文翻譯。根據Fvtt-cn及AlphaStarguide版本進行繁簡轉換。",
   "authors": [
     {
       "name": "HKTRPG",
@@ -9,8 +9,8 @@
     }
   ],
   "compatibility": {
-    "minimum": "10",
-    "verified": "10"
+    "minimum": "11",
+    "verified": "11"
   },
   "systems": [ "pf2e" ],
   "languages": [

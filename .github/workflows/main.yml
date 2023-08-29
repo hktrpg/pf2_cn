@@ -25,7 +25,7 @@ jobs:
           view_top: 1
 
       - name: Download pf2_cn.zip
-        run: wget https://github.com/fvtt-cn/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
+        run: wget https://github.com/AlphaStarguide/pf2_cn/releases/latest/download/pf2_cn.zip -O ./.github/pf2_cn.zip
 
       - name: Unzip module.json from pf2_cn.zip
         run: unzip -p ./.github/pf2_cn.zip 'module.json' >./.github/module.json

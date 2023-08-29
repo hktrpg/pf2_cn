@@ -53,6 +53,15 @@ jobs:
         if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}
         run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/re-cn.json -o ./.github/${{ steps.read_version.outputs.version }}/re-zh-tw.json -c s2tw.json
 
+      - name: Convert action-zh_Hans.json to action-zh-tw.json
+        if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}
+        run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/action-zh_Hans.json -o ./.github/${{ steps.read_version.outputs.version }}/action-zh-tw.json -c s2tw.json
+
+      - name: Convert kingmaker-zh_Hans.json to kingmaker-zh-tw.json
+        if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}
+        run: opencc -i ./.github/${{ steps.read_version.outputs.version }}/kingmaker-cn.json -o ./.github/${{ steps.read_version.outputs.version }}/kingmaker-zh-tw.json -c s2tw.json
+
+
       - name: Update version in module.json
         if: ${{ steps.last_release.outputs.tag_name != steps.read_version.outputs.version }}
         run: jq --arg ver "${{ steps.read_version.outputs.version }}" '.version=$ver' module.json > ./.github/${{ steps.read_version.outputs.version }}/module.json

@@ -9,10 +9,12 @@
     }
   ],
   "compatibility": {
-    "minimum": "11",
+    "minimum": "10",
     "verified": "11"
   },
-  "systems": [ "pf2e" ],
+  "systems": [
+    "pf2e"
+  ],
   "languages": [
     {
       "lang": "zh-tw",
@@ -21,15 +23,27 @@
     },
     {
       "lang": "zh-tw",
+      "name": "動作元素（正體中文）",
+      "path": "action-zh-tw.json"
+    },
+    {
+      "lang": "zh-tw",
+      "name": "擁王者元素（正體中文）",
+      "path": "kingmaker-zh-tw.json"
+    },
+    {
+      "lang": "zh-tw",
       "name": "規則元素（正體中文）",
       "path": "re-zh-tw.json"
     }
   ],
-  "dependencies": [{
-    "name": "pf2e",
-    "type": "system",
-    "manifest": "https://github.com/foundryvtt/pf2e/releases/latest/download/system.json"
-  }],
+  "dependencies": [
+    {
+      "name": "pf2e",
+      "type": "system",
+      "manifest": "https://github.com/foundryvtt/pf2e/releases/latest/download/system.json"
+    }
+  ],
   "version": "Auto replaced",
   "url": "https://github.com/hktrpg/pf2_cn_to_zh-tw",
   "manifest": "https://github.com/hktrpg/pf2_cn_to_zh-tw/releases/latest/download/module.json",

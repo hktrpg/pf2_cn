@@ -13,5 +13,5 @@
 ## 感謝
 
 - 本Module使用[FVTT-CN](https://github.com/fvtt-cn/pf2_cn)及
-- [AlphaStarguide](https://github.com/AlphaStarguide/pf2_cn)
+- [losyky](https://github.com/losyky/pf2e_cn)
 - 資料進行繁簡轉換製作。
